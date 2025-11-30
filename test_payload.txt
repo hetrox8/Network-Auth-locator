@@ -1,0 +1,2 @@
+This is a test payload for red team testing
+If you can read this, file copy was successful

@@ -1,0 +1,5 @@
+# For advanced features (optional)
+pycryptodome
+requests
+pillow
+psutil

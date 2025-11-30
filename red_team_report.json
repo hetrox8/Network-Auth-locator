@@ -1,0 +1,60 @@
+{
+  "timestamp": "2025-11-29 13:47:29",
+  "results": {
+    "discovery": {
+      "192.168.1.1": {
+        "ports": [
+          80
+        ],
+        "netbios": {
+          "nbtstat -A 192.168.1.1": "Error: Command 'nbtstat -A 192.168.1.1' timed out after 10 seconds",
+          "nmblookup -A 192.168.1.1": ""
+        }
+      },
+      "192.168.1.100": {
+        "ports": [
+          21,
+          53,
+          80
+        ],
+        "netbios": {
+          "nbtstat -A 192.168.1.100": "Error: Command 'nbtstat -A 192.168.1.100' timed out after 10 seconds",
+          "nmblookup -A 192.168.1.100": ""
+        }
+      },
+      "192.168.1.102": {
+        "ports": [
+          53,
+          135,
+          139,
+          445,
+          3389,
+          5985
+        ],
+        "netbios": {
+          "nbtstat -A 192.168.1.102": "Error: Command 'nbtstat -A 192.168.1.102' timed out after 10 seconds",
+          "nmblookup -A 192.168.1.102": ""
+        }
+      },
+      "192.168.1.103": {
+        "ports": [],
+        "netbios": {
+          "nbtstat -A 192.168.1.103": "Error: Command 'nbtstat -A 192.168.1.103' timed out after 10 seconds",
+          "nmblookup -A 192.168.1.103": ""
+        }
+      },
+      "192.168.1.105": {
+        "ports": [],
+        "netbios": {
+          "nbtstat -A 192.168.1.105": "Error: Command 'nbtstat -A 192.168.1.105' timed out after 10 seconds",
+          "nmblookup -A 192.168.1.105": ""
+        }
+      }
+    },
+    "lateral_movement": {
+      "shares": [],
+      "wmi_accessible": false
+    },
+    "deployment": {}
+  }
+}
