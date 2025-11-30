@@ -95,22 +95,50 @@ common_ports = [21, 22, 23, 53, 80, 135, 139, 443, 445, 3389, 5985, 5986]
 
 ### Windows Domain Credentials
 
-For authenticated scanning and lateral movement, configure the following credentials:
+For authenticated scanning and lateral movement, configure credentials using one of the following secure methods:
+
+**Option 1: Secure Credential File** (Recommended)
+
+Create a `.env` file with restricted permissions (not tracked in git):
 
 ```bash
-# Set environment variables for authentication
-set DOMAIN_USER=<your_domain_username>
-set DOMAIN_PASS=<your_domain_password>
-set DOMAIN_NAME=<your_domain_name>
+# Create credential file
+touch .credentials.env
+
+# Set restrictive permissions (Unix/Linux/macOS)
+chmod 600 .credentials.env
+
+# Or on Windows PowerShell
+icacls .credentials.env /inheritance:r /grant:r "$env:USERNAME:(R)"
 ```
 
-Or on Linux/macOS:
+Add credentials to `.credentials.env`:
+```ini
+DOMAIN_USER=your_domain_username
+DOMAIN_PASS=your_domain_password
+DOMAIN_NAME=your_domain_name
+```
+
+**Option 2: Interactive Prompt**
+
+Use secure input methods that don't log to shell history:
 
 ```bash
-export DOMAIN_USER=<your_domain_username>
-export DOMAIN_PASS=<your_domain_password>
-export DOMAIN_NAME=<your_domain_name>
+# PowerShell secure prompt
+$cred = Get-Credential
+$env:DOMAIN_USER = $cred.UserName
+$env:DOMAIN_PASS = $cred.GetNetworkCredential().Password
 ```
+
+**Option 3: Windows Credential Manager**
+
+```powershell
+# Store credentials securely
+cmdkey /add:TargetServer /user:DOMAIN\Username /pass
+# (Password prompted securely, not visible)
+```
+
+> ⚠️ **Security Note**: Never hardcode credentials in scripts or set them directly in command line as they may appear in shell history, process lists, or logs.
 
 ### Credential Requirements
 
@@ -130,12 +158,18 @@ For SMB-based operations, ensure:
 
 ### WMI Authentication
 
-For WMI remote execution:
+For WMI remote execution, use secure authentication methods:
 
-```bash
-# Windows command line authentication
-wmic /node:<TARGET_IP> /user:<USERNAME> /password:<PASSWORD> <command>
+```powershell
+# PowerShell - Secure credential prompt (recommended)
+$cred = Get-Credential
+Invoke-WmiMethod -ComputerName <TARGET_IP> -Credential $cred -Class Win32_Process -Name Create -ArgumentList "cmd.exe /c whoami"
+
+# Or use Windows session authentication (current user context)
+wmic /node:<TARGET_IP> <command>
 ```
+
+> ⚠️ **Never pass passwords directly in command line arguments** - they will appear in process lists and logs.
 
 ### C2 Server Configuration (For Advanced Use)
 
